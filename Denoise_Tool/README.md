@@ -44,3 +44,9 @@ I based on those github to denoise by FRCRN: \
 https://github.com/alibabasglab/FRCRN/tree/main  \
 https://github.com/modelscope/modelscope
 
+## Author and contacts
+1. Khai Tam \
+2. Nguyen Huu Nam Phong. \
+Contact if need help: phong.nguyenhuunam@hcmut.edu.vn
+
+
