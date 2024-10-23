@@ -1,0 +1,14 @@
+modelscope
+matplotlib==3.7.3
+numba==0.58.0
+numpy==1.25.2
+python=3.8.8
+pesq==0.0.4
+pypesq==1.2.4
+pystoi==0.3.3
+scipy==1.11.4
+soundfile
+torch==2.1.0+cu118
+torchaudio==2.1.0+cu118
+torchmetrics
+jupyterlab
