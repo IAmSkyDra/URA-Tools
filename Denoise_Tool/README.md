@@ -48,7 +48,6 @@ Example of runner.py
 > main.main(r"C:\Users\nghna\Downloads\Test")
 >
 
-
 ## Reference
 We based on those github to denoise by FRCRN: \
 https://github.com/alibabasglab/FRCRN/tree/main  \

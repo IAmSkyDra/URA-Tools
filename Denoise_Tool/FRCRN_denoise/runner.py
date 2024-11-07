@@ -1,3 +1,3 @@
 import main
 
-main.main(r"C:\Users\nghna\Downloads\Test")
+main.main(r"C:\Users\nghna\Downloads\Test\videoTest", "mp4")

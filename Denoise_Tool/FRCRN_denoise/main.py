@@ -1,49 +1,43 @@
 #This script is used to import all the necessary libraries for the project
 #The output of this script is the version of the libraries imported
 
-import io
 import os
-import sys
-import math
-#import tarfile
-import multiprocessing
 
-import scipy
 import librosa
 import soundfile as sf
 
-import requests
-import matplotlib
 import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
-import time
 from IPython.display import Audio, display
 
 import torch
 import torchaudio
-import torchaudio.functional as F
 import torchaudio.transforms as T
 
 import parselmouth
 from parselmouth.praat import call
 from pathlib import Path
-
-from metrics import AudioMetrics
-from metrics import AudioMetrics2
-#from Audio_metrics import AudioMetrics2
-import noise_addition_utils
-from pypesq import pesq
 import shutil
 
-#import pathlib
-
+import moviepy
+from moviepy.editor import *
 print(torch.__version__)
 print(torchaudio.__version__)
 
 #-------------------------------------------------------------------------------
 # Helper functions.
 #-------------------------------------------------------------------------------
+
+def movieToAudio(input_path, output_path):
+    # Load the video file
+    video = moviepy.editor.VideoFileClip(input_path)
+
+    # Extract the audio from the video
+    audio = video.audio
+
+    # Save the audio to a WAV file
+    audio.write_audiofile(output_path)
 
 def denoise_audio(input_path, output_path, smoothing_factor):
     # Load the audio file
@@ -190,39 +184,67 @@ def copy_wav_files_to_single_directory(input_path, output_path):
 
 
 
-def main(path):
+def main(path, type):
+  if (type == "wav"):
     bahna_dataset = sorted(list(Path(path).rglob('*.wav')))
-    print(bahna_dataset)
-    stat_bahna_spectral_subtraction = pd.DataFrame(columns=['Name','Max', 'Min', 'Mean','Std','Noise_level_before_denoised','Max_after_denoised', 'Min_after_denoised', 'Mean_after_denoised','Std_after_denoised','Noise_level_after_denoised'])
-    for i in bahna_dataset:
-        print(i)
-        waveform, sample_rate = torchaudio.load(i)
-        max_,min_,mean_,std_ = get_stats(waveform, sample_rate = sample_rate)
-        # Calculate noise level
-        if std_!=0 :
-            noise_level = 20*( np.log10(std_/max_))
-        else:
-            noise_level = 0
+  elif (type == "mp4"):
+    video_dataset = sorted(list(Path(path).rglob('*.mp4')))
+    for i in video_dataset:
         normalized_path = os.path.normpath(i)
-        input_path = os.path.splitext(normalized_path)[0] + os.path.splitext(normalized_path)[1]
-        denoised_path = os.path.splitext(normalized_path)[0] + "_denoised_spectral_subtraction" + os.path.splitext(normalized_path)[1]
-        snd = parselmouth.Sound(input_path)
-        snd_denoised = snd.copy()
-        snd_denoised = call(snd_denoised, "Reduce noise", 0.0, 0.0, 0.025, 80.0, 10000.0, 40.0,noise_level, "Spectral-subtraction")
-        # Save the denoised audio
-        snd_denoised.save(denoised_path, "WAV")
-        print(denoised_path)
-        waveform_denoised, sample_rate_denoised = torchaudio.load(denoised_path)
-        max_after,min_after,mean_after,std_after=get_stats(waveform_denoised, sample_rate=sample_rate_denoised)
-        if std_after!=0 :
-            noise_level_after = 10*( np.log10(std_after/max_after))
-        else:
-            noise_level_after = 0
-        df = pd.DataFrame({"Name":[i],"Max":[max_],"Min":[min_],"Mean":[mean_],"Std":[std_],"Noise_level_before_denoised":[noise_level],'Max_after_denoised':[max_after], 'Min_after_denoised':[min_after], 'Mean_after_denoised':[mean_after],'Std_after_denoised':[std_after],'Noise_level_after_denoised':[noise_level_after]})
-        stat_bahna_spectral_subtraction=pd.concat([stat_bahna_spectral_subtraction,df], ignore_index=True)
-    
-    stat_bahna_spectral_subtraction.to_csv('stat_bahna_spectral_subtraction.csv')
-    print(stat_bahna_spectral_subtraction)
+        audio_path = os.path.splitext(normalized_path)[0] + ".wav"
+        movieToAudio(normalized_path, audio_path)
+        bahna_dataset = sorted(list(Path(path).rglob('*.wav')))
+      
+  print(bahna_dataset)
+  stat_bahna_spectral_subtraction = pd.DataFrame(columns=['Name','Max', 'Min', 'Mean','Std','Noise_level_before_denoised','Max_after_denoised', 'Min_after_denoised', 'Mean_after_denoised','Std_after_denoised','Noise_level_after_denoised'])
+  for i in bahna_dataset:
+      print(i)
+      waveform, sample_rate = torchaudio.load(i)
+      max_,min_,mean_,std_ = get_stats(waveform, sample_rate = sample_rate)
+      # Calculate noise level
+      if std_!=0 :
+          noise_level = 20*( np.log10(std_/max_))
+      else:
+          noise_level = 0
+      normalized_path = os.path.normpath(i)
+      input_path = os.path.splitext(normalized_path)[0] + os.path.splitext(normalized_path)[1]
+      denoised_path = os.path.splitext(normalized_path)[0] + "_denoised_spectral_subtraction" + os.path.splitext(normalized_path)[1]
+      snd = parselmouth.Sound(input_path)
+      snd_denoised = snd.copy()
+      snd_denoised = call(snd_denoised, "Reduce noise", 0.0, 0.0, 0.025, 80.0, 10000.0, 40.0,noise_level, "Spectral-subtraction")
+      # Save the denoised audio
+      snd_denoised.save(denoised_path, "WAV")
+      print(denoised_path)
+      waveform_denoised, sample_rate_denoised = torchaudio.load(denoised_path)
+      max_after,min_after,mean_after,std_after=get_stats(waveform_denoised, sample_rate=sample_rate_denoised)
+      if std_after!=0 :
+          noise_level_after = 10*( np.log10(std_after/max_after))
+      else:
+          noise_level_after = 0
+      df = pd.DataFrame({"Name":[i],"Max":[max_],"Min":[min_],"Mean":[mean_],"Std":[std_],"Noise_level_before_denoised":[noise_level],'Max_after_denoised':[max_after], 'Min_after_denoised':[min_after], 'Mean_after_denoised':[mean_after],'Std_after_denoised':[std_after],'Noise_level_after_denoised':[noise_level_after]})
+      stat_bahna_spectral_subtraction=pd.concat([stat_bahna_spectral_subtraction,df], ignore_index=True)
+  
+  stat_bahna_spectral_subtraction.to_csv('stat_bahna_spectral_subtraction.csv')
+  
+        
+  print("Done")
+  if (type == "mp4"):
+    video_dataset = sorted(list(Path(path).rglob('*.mp4')))
+    audio_dataset = sorted(list(Path(path).rglob('*.wav')))
+
+    for i in video_dataset:
+        normalized_path = os.path.normpath(i)
+        videoclip = VideoFileClip(normalized_path)
+        audio_path = os.path.splitext(normalized_path)[0] + "_denoised_spectral_subtraction" + ".wav"
+        print(audio_path)
+        audioclip = AudioFileClip(audio_path)
+        videoclip = videoclip.set_audio(audioclip)
+        videoclip.write_videofile(os.path.splitext(normalized_path)[0] + "_denoised_spectral_subtraction" + ".mp4")
+        print(os.path.splitext(normalized_path)[0] + "_denoised_spectral_subtraction" + ".mp4")
+    print("Done video")
+        
+  
+  print(stat_bahna_spectral_subtraction)
 
 if __name__ == "__main__":
     main()

@@ -10,7 +10,6 @@ from scipy.signal import stft,get_window,correlate,resample
 import numpy as np
 import pesq as pypesq
 from numba import jit
-import copy
 
 # Main Sources/References:
 # https://github.com/schmiph2/pysepm
