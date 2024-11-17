@@ -1,3 +1,2 @@
 ,Name,Max,Min,Mean,Std,Noise_level_before_denoised,Max_after_denoised,Min_after_denoised,Mean_after_denoised,Std_after_denoised,Noise_level_after_denoised
-0,C:\Users\nghna\Downloads\Test\videoTest\test.wav,0.98999023,-0.98999023,3.4049758e-06,0.2806718,-10.948642492294312,0.9999695,-1.0,2.1632627e-07,0.21534503,-6.668518781661987
-1,C:\Users\nghna\Downloads\Test\videoTest\test_denoised_spectral_subtraction.wav,0.9999695,-1.0,2.1632627e-07,0.21534503,-13.337037563323975,0.9999695,-1.0,9.732737e-08,0.2107332,-6.762537360191345
+0,C:\Users\nghna\Downloads\Video\C3\Khoi tao trong so.wav,0.98999023,-0.98999023,2.4539486e-06,0.10617138,-19.39246892929077,0.9999695,-1.0,2.907584e-09,0.10632145,-9.73365843296051

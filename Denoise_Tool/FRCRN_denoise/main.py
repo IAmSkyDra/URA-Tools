@@ -22,6 +22,7 @@ import shutil
 
 import moviepy
 from moviepy.editor import *
+from tqdm import tqdm
 print(torch.__version__)
 print(torchaudio.__version__)
 
@@ -197,7 +198,7 @@ def main(path, type):
       
   print(bahna_dataset)
   stat_bahna_spectral_subtraction = pd.DataFrame(columns=['Name','Max', 'Min', 'Mean','Std','Noise_level_before_denoised','Max_after_denoised', 'Min_after_denoised', 'Mean_after_denoised','Std_after_denoised','Noise_level_after_denoised'])
-  for i in bahna_dataset:
+  for i in tqdm(bahna_dataset, desc="Processing audio files"):
       print(i)
       waveform, sample_rate = torchaudio.load(i)
       max_,min_,mean_,std_ = get_stats(waveform, sample_rate = sample_rate)
@@ -232,7 +233,7 @@ def main(path, type):
     video_dataset = sorted(list(Path(path).rglob('*.mp4')))
     audio_dataset = sorted(list(Path(path).rglob('*.wav')))
 
-    for i in video_dataset:
+    for i in tqdm(video_dataset, desc="Processing video files"):
         normalized_path = os.path.normpath(i)
         videoclip = VideoFileClip(normalized_path)
         audio_path = os.path.splitext(normalized_path)[0] + "_denoised_spectral_subtraction" + ".wav"
