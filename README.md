@@ -1,4 +1,7 @@
 # Denoise Tool
+## TL, DR
+How to use (razor language): open terminal and run 'pip install -r requirements.txt', then open runner.py, edit the folder link and filetype (mp4 or wav) then run.
+
 ## Description
 Speech denoising is the process of removing unwanted noise from speech signals while preserving the integrity of the speech itself. 
 The problem of speech denoising arises when speech signals are corrupted by various types of noise, such as background noise, microphone noise, or electrical interference.
