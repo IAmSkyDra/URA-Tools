@@ -18,6 +18,7 @@ Example of runner.py
 > import main
 > main.main(r"C:\Users\nghna\Downloads\Test","mp4")
 >
+![image](https://github.com/user-attachments/assets/fd9ab169-92b0-48d2-8565-b7016fa399bf)
 
 ## Reference
 We based on those github to denoise by FRCRN: \
