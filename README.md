@@ -1,6 +1,6 @@
 # Denoise Tool
 ## TL, DR
-How to use (razor language): open terminal and run 'pip install -r requirements.txt', then open runner.py, edit the folder link and filetype (mp4 or wav) then run.
+How to use (razor language): open terminal and run 'pip install -r requirements.txt', then run .bat files, enter path and type then press run.
 
 ## Description
 Speech denoising is the process of removing unwanted noise from speech signals while preserving the integrity of the speech itself. 
@@ -13,15 +13,11 @@ To use the FRCNR module, you need to deploy Python environment and install the m
 Quick install can be implemented by 'pip install -r requirements.txt'
 ## Usage explaination
 To use the module, locate to the folder that's contain the module. The folder's path should be somewhat similar to: "C:\...\URA-Tools\Denoise_Tool\FRCRN_denoise". \ 
-Then, open "runner.py" and paste the path inside the main.main() function to the path that contains the file that's need to be denoised. The second parameter of the main function represents the file type ("wav" or "mp4"). The audio files MUST be .wav file, while the video file MUST be .mp4 file.
+Then, open "runner.bat" and paste the path inside the path textbox. The second parameter is the file type ("mov" or "mp4"). Click on this to toggle.
 After running the runner, the denoised file then can be found in the same folder with its name added the word 'denoised'. \
-Example of runner.py
+Example of runner.bat
+![image](https://github.com/user-attachments/assets/123d2b7d-ba9b-4361-92a4-130476fd8b9c)
 
-> 
-> import main
-> main.main(r"C:\Users\nghna\Downloads\Test","mp4")
->
-![image](https://github.com/user-attachments/assets/fd9ab169-92b0-48d2-8565-b7016fa399bf)
 
 ## Reference
 We based on those github to denoise by FRCRN: \
